@@ -31,9 +31,7 @@ export default function Home() {
   const setLoggedIn = useStoreActions(actions => actions.login.setLoggedIn)
 
   useEffect(() => {
-    if (nextbnb_session) {
-      setLoggedIn(true)
-    }
+    if (nextbnb_session) { setLoggedIn(true) }
   }, [])
 
   return <Layout content={content} />
