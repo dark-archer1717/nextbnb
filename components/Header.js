@@ -13,7 +13,7 @@ export default function Header(props) {
     <div className='nav-container'>
       <Link href='/'>
         <a>
-          <img src='/img/logo.png' alt='' />
+          <img src='/img/bnb.png' alt='' />
         </a>
       </Link>
 
