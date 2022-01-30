@@ -30,6 +30,7 @@ export default async (req, res) => {
     user = await User.create({ email, password })
 
     const sessionToken = randomString(255)
+    // session expiration date setting
     const d = new Date()
     d.setDate(d.getDate() + 30)
     User.update(

@@ -1,6 +1,13 @@
 import { createStore, action } from 'easy-peasy'
 
 export default createStore({
+  //state of login
+  login: {
+    loggedIn: false,
+    setLoggedIn: action((state) => {
+      state.loggedIn = true
+    }),
+  },
   modals: {
     showModal: false,
     showLoginModal: false,
@@ -23,3 +30,4 @@ export default createStore({
     })
   }
 })
+

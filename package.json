@@ -11,6 +11,7 @@
     "@railway/cli": "^0.3.1",
     "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
+    "cookies": "^0.8.0",
     "date-fns": "^2.28.0",
     "easy-peasy": "^5.0.4",
     "eslint-plugin-react-hooks": "^4.3.0",

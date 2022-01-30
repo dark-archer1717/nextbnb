@@ -1,17 +1,18 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import styles from '../styles/Home.module.css';
-// houses data
-import houses from '../houses';
-import House from '../components/House';
-import Layout from '../components/Layout';
+import Cookies from 'cookies'
+import { useStoreActions } from 'easy-peasy'
+import { useEffect } from 'react'
+
+import houses from '../houses.js'
+import House from '../components/House'
+import Layout from '../components/Layout'
 
 const content = (
   <div>
-    <h2 className="headline">Places to Stay, Feeling of Home</h2>
-    <div className="houses">
+    <h2>Places to stay</h2>
+
+    <div className='houses'>
       {houses.map((house, index) => {
-        return <House key={index} {...house} />;
+        return <House key={index} {...house} />
       })}
     </div>
 
@@ -22,19 +23,29 @@ const content = (
         grid-template-rows: 300px 300px;
         grid-gap: 2%;
       }
-      .headline {
-        background-color: #061d33ba;
-        padding: 1.5rem;
-        border-radius: 0.76rem;
-        text-align: center;
-        font-size: 2rem;
-        box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.4);
-        color: #d4cae2d1;
-      }
     `}</style>
   </div>
-);
+)
 
 export default function Home() {
-  return <Layout content={content} />;
+  const setLoggedIn = useStoreActions(actions => actions.login.setLoggedIn)
+
+  useEffect(() => {
+    if (nextbnb_session) {
+      setLoggedIn(true)
+    }
+  }, [])
+
+  return <Layout content={content} />
+}
+
+export async function getServerSideProps({ req, res, query }) {
+  const cookies = new Cookies(req, res)
+  const nextbnb_session = cookies.get('nextbnb_session')
+
+  return {
+    props: {
+      nextbnb_session: nextbnb_session || null
+    }
+  }
 }
