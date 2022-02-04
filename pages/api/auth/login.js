@@ -1,4 +1,4 @@
-import { User, sequelize } from "../../../model";
+import { User, sequelize, House } from "../../../model";
 import Cookies from 'cookies'
 
 const randomString = (length) => {
@@ -15,6 +15,8 @@ export default async (req, res) => {
     res.status(405).end() //Method not allowed
     return
   }
+
+  House.sync()
 
   //find a user with email
 

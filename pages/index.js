@@ -1,7 +1,6 @@
 import Cookies from 'cookies'
 import { useStoreActions } from 'easy-peasy'
 import { useEffect } from 'react'
-
 import houses from '../houses.js'
 import House from '../components/House'
 import Layout from '../components/Layout'
@@ -30,8 +29,10 @@ const content = (
 export default function Home() {
   const setLoggedIn = useStoreActions(actions => actions.login.setLoggedIn)
 
-  useEffect(() => {
-    if (nextbnb_session) { setLoggedIn(true) }
+  useEffect((nextbnb_session) => {
+    if (nextbnb_session) {
+      setLoggedIn(true)
+    }
   }, [])
 
   return <Layout content={content} />
