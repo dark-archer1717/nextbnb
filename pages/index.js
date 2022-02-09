@@ -4,6 +4,8 @@ import { useEffect } from 'react'
 import houses from '../houses.js'
 import House from '../components/House'
 import Layout from '../components/Layout'
+import { House as HouseModel } from '../model.js'
+
 
 const content = (
   <div>
@@ -26,10 +28,10 @@ const content = (
   </div>
 )
 
-export default function Home() {
+export default function Home(nextbnb_session, houses) {
   const setLoggedIn = useStoreActions(actions => actions.login.setLoggedIn)
 
-  useEffect((nextbnb_session) => {
+  useEffect(() => {
     if (nextbnb_session) {
       setLoggedIn(true)
     }
@@ -40,11 +42,13 @@ export default function Home() {
 
 export async function getServerSideProps({ req, res, query }) {
   const cookies = new Cookies(req, res)
+  const houses = await HouseModel.findAndCountAll()
   const nextbnb_session = cookies.get('nextbnb_session')
 
   return {
     props: {
-      nextbnb_session: nextbnb_session || null
+      nextbnb_session: nextbnb_session || null,
+      houses: houses.rows.map((house) => house.dataValues)
     }
   }
 }
