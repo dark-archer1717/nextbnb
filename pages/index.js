@@ -9,7 +9,7 @@ import { House as HouseModel } from '../model.js'
 
 const content = (
   <div>
-    <h2>Places to stay</h2>
+    <h2>Places to Stay</h2>
 
     <div className='houses'>
       {houses.map((house, index) => {

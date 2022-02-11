@@ -1,15 +1,11 @@
 import Head from 'next/head'
-import houses from '../../houses.js'
+import axios from 'axios'
+import { useStoreActions, useStoreState } from 'easy-peasy'
 import Layout from '../../components/Layout'
 import DateRangePicker from '../../components/DateRangePicker'
 import { useState, useEffect } from 'react'
-import { useStoreActions } from 'easy-peasy'
 import Cookies from 'cookies'
 import { House as HouseModel } from '../../model.js'
-import { useStoreState } from 'easy-peasy'
-import axios from 'axios'
-
-
 
 const calcNumberOfNightsBetweenDates = (startDate, endDate) => {
   const start = new Date(startDate) //clone
@@ -24,21 +20,38 @@ const calcNumberOfNightsBetweenDates = (startDate, endDate) => {
   return dayCount
 }
 
-export default function House({ house, nextbnb_session }) {
-  const [endDate, setEndDate] = useState()
+const getBookedDates = async id => {
+  try {
+    const response = await axios.post(
+      'http://localhost:3000/api/houses/booked',
+      { houseId: id }
+    )
+    if (response.data.status === 'error') {
+      alert(response.data.message)
+      return
+    }
+    return response.data.dates
+  } catch (error) {
+    console.error(error)
+    return
+  }
+}
+
+export default function House({ house, nextbnb_session, bookedDates }) {
   const [startDate, setStartDate] = useState()
+  const [endDate, setEndDate] = useState()
 
   const [dateChosen, setDateChosen] = useState(false)
   const [numberOfNightsBetweenDates, setNumberOfNightsBetweenDates] =
     useState(0)
 
+  const loggedIn = useStoreState(state => state.login.loggedIn)
 
   const setShowLoginModal = useStoreActions(
     actions => actions.modals.setShowLoginModal
   )
 
   const setLoggedIn = useStoreActions(actions => actions.login.setLoggedIn)
-  const loggedIn = useStoreState((state) => state.login.loggedIn)
 
   useEffect(() => {
     if (nextbnb_session) {
@@ -71,6 +84,7 @@ export default function House({ house, nextbnb_session }) {
                 setStartDate(startDate)
                 setEndDate(endDate)
               }}
+              bookedDates={bookedDates}
             />
 
             {dateChosen && (
@@ -79,41 +93,43 @@ export default function House({ house, nextbnb_session }) {
                 <p>${house.price}</p>
                 <h2>Total price for booking</h2>
                 <p>${(numberOfNightsBetweenDates * house.price).toFixed(2)}</p>
-                {
-                  loggedIn ? (
-                    <button
-                      className='reserve'
-                      onClick={async () => {
-                        try {
-                          const response = await axios.post('/api/reserve', {
-                            houseId: house.id,
-                            startDate,
-                            endDate,
-                          })
-                          if (response.data.status === 'error') {
-                            alert(response.data.message)
-                            return
-                          }
-                          console.log(response.data)
-                        } catch (error) {
-                          console.log(error)
+                {loggedIn ? (
+                  <button
+                    className='reserve'
+                    onClick={async () => {
+                      if (!(await canReserve(houseId, startDate, endDate))) {
+                        alert("The dated choosen are not valid")
+                        return
+                      }
+                      try {
+                        const response = await axios.post('/api/reserve', {
+                          houseId: house.id,
+                          startDate,
+                          endDate
+                        })
+                        if (response.data.status === 'error') {
+                          alert(response.data.message)
                           return
                         }
-                      }}
-                    >
-                      Reserve
-                    </button>
-                  ) : (
-                    <button
-                      className="reserve"
-                      onClick={() => {
-                        setShowLoginModal()
-                      }}
-                    >
-                      Log in to Reserve
-                    </button>
-                  )
-                }
+                        console.log(response.data)
+                      } catch (error) {
+                        console.log(error)
+                        return
+                      }
+                    }}
+                  >
+                    Reserve
+                  </button>
+                ) : (
+                  <button
+                    className='reserve'
+                    onClick={() => {
+                      setShowLoginModal()
+                    }}
+                  >
+                    Log in to Reserve
+                  </button>
+                )}
               </div>
             )}
           </aside>
@@ -140,13 +156,13 @@ export async function getServerSideProps({ req, res, query }) {
   const cookies = new Cookies(req, res)
   const nextbnb_session = cookies.get('nextbnb_session')
   const house = await HouseModel.findByPk(id)
-
+  const bookedDates = await getBookedDates(id)
 
   return {
     props: {
-      house: houses.filter(house => house.id === parseInt(id))[0],
-      nextbnb_session: nextbnb_session || null,
       house: house.dataValues,
+      nextbnb_session: nextbnb_session || null,
+      bookedDates
     }
   }
 }
