@@ -1,6 +1,5 @@
-import axios from 'axios';
-import { Sequelize } from 'sequelize';
-import { Booking } from '../../model';
+import { Booking } from '../../../model.js'
+import { Sequelize } from 'sequelize'
 
 const canBookThoseDates = async (houseId, startDate, endDate) => {
   const results = await Booking.findAll({
@@ -13,45 +12,26 @@ const canBookThoseDates = async (houseId, startDate, endDate) => {
         [Sequelize.Op.gte]: new Date(startDate)
       }
     }
-  });
-  return !(results.length > 0);
-};
+  })
+  return !(results.length > 0)
+}
 
 export default async (req, res) => {
   if (req.method !== 'POST') {
-    res.status(405).end(); //Method Not Allowed
-    return;
+    res.status(405).end() //Method Not Allowed
+    return
   }
+  const startDate = req.body.startDate
+  const endDate = req.body.endDate
+  const houseId = req.body.houseId
 
-  const startDate = req.body.startDate;
-  const endDate = req.body.endDate;
-  const houseId = req.body.houseId;
-
-  let message = 'free';
+  let message = 'free'
   if (!(await canBookThoseDates(houseId, startDate, endDate))) {
-    message: busy;
+    message = 'busy'
   }
+
   res.json({
-    status: success,
+    status: 'success',
     message: message
-  });
-
-  const canReserve = async (houseId, startDate, endDate) => {
-    try {
-      const response = await axios.post(
-        'http://localhost:3000/api/houses/check',
-        { houseId, startDate, endDate }
-      );
-      if (response.data.status === 'error') {
-        alert(response.data.message);
-        return;
-      }
-
-      if (response.data.message === 'busy') return false;
-      return true;
-    } catch (error) {
-      console.error(error);
-      return;
-    }
-  };
-};
+  })
+}
