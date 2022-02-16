@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import axios from 'axios'
 import { useStoreActions, useStoreState } from 'easy-peasy'
+
 import Layout from '../../components/Layout'
 import DateRangePicker from '../../components/DateRangePicker'
 import { useState, useEffect } from 'react'
@@ -31,6 +32,25 @@ const getBookedDates = async id => {
       return
     }
     return response.data.dates
+  } catch (error) {
+    console.error(error)
+    return
+  }
+}
+
+const canReserve = async (houseId, startDate, endDate) => {
+  try {
+    const response = await axios.post(
+      'http://localhost:3000/api/houses/check',
+      { houseId, startDate, endDate }
+    )
+    if (response.data.status === 'error') {
+      alert(response.data.message)
+      return
+    }
+
+    if (response.data.message === 'busy') return false
+    return true
   } catch (error) {
     console.error(error)
     return
@@ -97,10 +117,13 @@ export default function House({ house, nextbnb_session, bookedDates }) {
                   <button
                     className='reserve'
                     onClick={async () => {
-                      if (!(await canReserve(houseId, startDate, endDate))) {
-                        alert("The dated choosen are not valid")
+                      if (
+                        !(await canReserve(props.house.id, startDate, endDate))
+                      ) {
+                        alert('The dates chosen are not valid')
                         return
                       }
+
                       try {
                         const response = await axios.post('/api/reserve', {
                           houseId: house.id,
