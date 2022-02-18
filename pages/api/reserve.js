@@ -12,19 +12,18 @@ export default async (req, res) => {
     return
   }
 
-  User.findOne({ where: { session_token: user_session_token } }).then(
-    (user) => {
-      Booking.create({
-        houseId: req.body.houseId,
-        userId: user.id,
-        startDate: req.body.startDate,
-        endDate: req.body.endDate
-      }).then(() => {
-        res.writeHead(200, {
-          'Content-Type': 'application/json'
-        })
-        res.end(JSON.stringify({ status: 'success', message: 'ok' }))
+  User.findOne({ where: { session_token: user_session_token } }).then(user => {
+    Booking.create({
+      houseId: req.body.houseId,
+      userId: user.id,
+      startDate: req.body.startDate,
+      endDate: req.body.endDate,
+      sessionId: req.body.sessionId
+    }).then(() => {
+      res.writeHead(200, {
+        'Content-Type': 'application/json'
       })
-    }
-  )
+      res.end(JSON.stringify({ status: 'success', message: 'ok' }))
+    })
+  })
 }

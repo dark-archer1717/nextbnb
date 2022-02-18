@@ -117,24 +117,46 @@ export default function House({ house, nextbnb_session, bookedDates }) {
                   <button
                     className='reserve'
                     onClick={async () => {
-                      if (
-                        !(await canReserve(props.house.id, startDate, endDate))
-                      ) {
+                      if (!(await canReserve(house.id, startDate, endDate))) {
                         alert('The dates chosen are not valid')
                         return
                       }
 
                       try {
-                        const response = await axios.post('/api/reserve', {
-                          houseId: house.id,
-                          startDate,
-                          endDate
-                        })
-                        if (response.data.status === 'error') {
-                          alert(response.data.message)
+                        const sessionResponse = await axios.post(
+                          '/api/stripe/session',
+                          {
+                            amount: house.price * numberOfNightsBetweenDates
+                          }
+                        )
+                        if (sessionResponse.data.status === 'error') {
+                          alert(sessionResponse.data.message)
                           return
                         }
-                        console.log(response.data)
+
+                        const sessionId = sessionResponse.data.sessionId
+                        const stripePublicKey =
+                          sessionResponse.data.stripePublicKey
+
+                        const reserveResponse = await axios.post(
+                          '/api/reserve',
+                          {
+                            houseId: house.id,
+                            startDate,
+                            endDate,
+                            sessionId
+                          }
+                        )
+                        if (reserveResponse.data.status === 'error') {
+                          alert(reserveResponse.data.message)
+                          return
+                        }
+                        console.log(reserveResponse.data)
+
+                        const stripe = Stripe(stripePublicKey)
+                        const { error } = await stripe.redirectToCheckout({
+                          sessionId
+                        })
                       } catch (error) {
                         console.log(error)
                         return

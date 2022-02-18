@@ -84,6 +84,16 @@ Booking.init(
     sequelize,
     modelName: 'booking',
     timestamps: true
+  },
+  {
+    paid: {
+      type: Sequelize.DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: false
+    },
+    sessionId: {
+      type: Sequelize.DataTypes.STRING
+    }
   }
 )
 

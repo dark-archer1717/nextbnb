@@ -1,22 +1,22 @@
-import { Booking } from '../../../model.js';
-import { Sequelize } from 'sequelize';
+import { Booking } from '../../../model.js'
+import { Sequelize } from 'sequelize'
 
 const getDatesBetweenDates = (startDate, endDate) => {
-  let dates = [];
+  let dates = []
   while (startDate < endDate) {
-    dates = [...dates, new Date(startDate)];
-    startDate.setDate(startDate.getDate() + 1);
+    dates = [...dates, new Date(startDate)]
+    startDate.setDate(startDate.getDate() + 1)
   }
-  dates = [...dates, endDate];
-  return dates;
-};
+  dates = [...dates, endDate]
+  return dates
+}
 
 export default async (req, res) => {
   if (req.method !== 'POST') {
-    res.status(405).end(); //Method Not Allowed
-    return;
+    res.status(405).end() //Method Not Allowed
+    return
   }
-  const houseId = req.body.houseId;
+  const houseId = req.body.houseId
 
   const results = await Booking.findAll({
     where: {
@@ -25,25 +25,25 @@ export default async (req, res) => {
         [Sequelize.Op.gte]: new Date()
       }
     }
-  });
+  })
 
-  let bookedDates = [];
+  let bookedDates = []
 
   for (const result of results) {
     const dates = getDatesBetweenDates(
       new Date(result.startDate),
       new Date(result.endDate)
-    );
+    )
 
-    bookedDates = [...bookedDates, ...dates];
+    bookedDates = [...bookedDates, ...dates]
   }
 
   //remove duplicates
-  bookedDates = [...new Set(bookedDates.map((date) => date))];
+  bookedDates = [...new Set(bookedDates.map(date => date))]
 
   res.json({
     status: 'success',
     message: 'ok',
     dates: bookedDates
-  });
-};
+  })
+}

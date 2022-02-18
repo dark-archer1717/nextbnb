@@ -1,9 +1,11 @@
+/* eslint-disable @next/next/no-sync-scripts */
 import Header from './Header';
 import Modal from './Modal';
 import { useState } from 'react'
 import LoginModal from './Modals/LoginModal';
 import RegistrationModal from './Modals/RegistrationModal';
 import { useStoreState, useStoreActions } from 'easy-peasy'
+import Head from 'next/head';
 
 export default function Layout(props) {
 
@@ -23,6 +25,9 @@ export default function Layout(props) {
 
   return (
     <div>
+      <Head>
+        <script src='https://js.stripe.com/v3/'></script>
+      </Head>
       <Header />
       <main>{props.content}</main>
       {
