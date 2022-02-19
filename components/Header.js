@@ -25,6 +25,11 @@ export default function Header(props) {
             </a>
           </li>
           <li>
+            <Link href='/bookings'>
+              <a>Bookings</a>
+            </Link>
+          </li>
+          <li>
             <a href='#' onClick={() => setShowLoginModal()}>
               Log in
             </a>
