@@ -1,7 +1,10 @@
-import Link from "next/link"
-import { useStoreState, useStoreActions } from "easy-peasy"
+import Link from 'next/link'
+import { useStoreState, useStoreActions } from 'easy-peasy'
 
 export default function Header(props) {
+  const loggedIn = useStoreState(state => state.login.loggedIn)
+  const setLoggedIn = useStoreActions(actions => actions.login.setLoggedIn)
+
   const setShowLoginModal = useStoreActions(
     actions => actions.modals.setShowLoginModal
   )
@@ -10,33 +13,48 @@ export default function Header(props) {
   )
 
   return (
-    <div className='nav-container'>
-      <Link href='/'>
+    <div className="nav-container">
+      <Link href="/">
         <a>
-          <img src='/img/bnb.png' alt='' />
+          <img src="/img/bnb.png" alt="" />
         </a>
       </Link>
 
-      <nav>
-        <ul>
-          <li>
-            <a href='#' onClick={() => setShowRegistrationModal()}>
-              Sign up
-            </a>
-          </li>
-          <li>
-            <Link href='/bookings'>
-              <a>Bookings</a>
-            </Link>
-          </li>
-          <li>
-            <a href='#' onClick={() => setShowLoginModal()}>
-              Log in
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <li>
+        <Link href='/host'>
+          <a>Your Houses</a>
+        </Link>
+      </li>
 
+      {loggedIn ? (
+        <nav>
+          <ul>
+            <li>
+              <Link href="/bookings">
+                <a>Bookings</a>
+              </Link>
+            </li>
+            <li>
+              <a>Logged in</a>
+            </li>
+          </ul>
+        </nav>
+      ) : (
+        <nav>
+          <ul>
+            <li>
+              <a href="#" onClick={() => setShowRegistrationModal()}>
+                Sign up
+              </a>
+            </li>
+            <li>
+              <a href="#" onClick={() => setShowLoginModal()}>
+                Log in
+              </a>
+            </li>
+          </ul>
+        </nav>
+      )}
       <style jsx>{`
         ul {
           margin: 0;
@@ -67,5 +85,5 @@ export default function Header(props) {
         }
       `}</style>
     </div>
-  )
+  );
 }
