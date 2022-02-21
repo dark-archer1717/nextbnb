@@ -1,6 +1,6 @@
 import { Booking, User, House } from '../../../model.js';
 
-server.get('/api/host/index', async (req, res) => {
+server.get('/api/host/list', async (req, res) => {
   if (!req.session.passport || !req.session.passport.user) {
     res.writeHead(403, {
       'Content-Type': 'application/json'

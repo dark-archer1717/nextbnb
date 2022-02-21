@@ -59,7 +59,7 @@ const NewHouse = () => {
 
                 router.push('/host');
               } catch (error) {
-                alert(error.response.data.message);
+
                 return;
               }
             }}
@@ -98,11 +98,11 @@ const NewHouse = () => {
                 required
                 onChange={(event) => setPicture(event.target.value)}
                 type='text'
-                placeholder='House picture URL'
+                placeholder='house picture url'
               />
             </p>
             <p>
-              <label>House description</label>
+              <label>House Description</label>
               <textarea
                 required
                 onChange={(event) => setDescription(event.target.value)}
@@ -112,7 +112,7 @@ const NewHouse = () => {
             <div>
               <div>
                 <p>
-                  <label>Number of guests</label>
+                  <label>Number of Guests</label>
                   <input
                     required
                     onChange={(event) => setGuests(event.target.value)}
@@ -122,7 +122,7 @@ const NewHouse = () => {
                   />
                 </p>
                 <p>
-                  <label>Number of bedrooms</label>
+                  <label>Number of Bedrooms</label>
                   <input
                     required
                     onChange={(event) => setBedrooms(event.target.value)}
@@ -132,7 +132,7 @@ const NewHouse = () => {
                   />
                 </p>
                 <p>
-                  <label>Number of beds</label>
+                  <label>Number of Beds</label>
                   <input
                     required
                     onChange={(event) => setBeds(event.target.value)}
@@ -142,7 +142,7 @@ const NewHouse = () => {
                   />
                 </p>
                 <p>
-                  <label>Number of baths</label>
+                  <label>Number of Baths</label>
                   <input
                     required
                     onChange={(event) => setBaths(event.target.value)}
@@ -165,7 +165,7 @@ const NewHouse = () => {
                   </select>
                 </p>
                 <p>
-                  <label>Does it have a kitchen?</label>
+                  <label>Does it have a Kitchen?</label>
                   <select
                     onChange={(event) => setKitchen(event.target.value)}
                     value={kitchen}
@@ -175,7 +175,7 @@ const NewHouse = () => {
                   </select>
                 </p>
                 <p>
-                  <label>Does it have heating?</label>
+                  <label>Does it have Heating?</label>
                   <select
                     onChange={(event) => setHeating(event.target.value)}
                     value={heating}
@@ -195,7 +195,7 @@ const NewHouse = () => {
                   </select>
                 </p>
                 <p>
-                  <label>Is it the entire place?</label>
+                  <label>Is it the entire Place?</label>
                   <select
                     onChange={(event) => setEntirePlace(event.target.value)}
                     value={entirePlace}
@@ -205,7 +205,7 @@ const NewHouse = () => {
                   </select>
                 </p>
                 <p>
-                  <label>Type of house</label>
+                  <label>Type of House</label>
                   <select
                     onChange={(event) => setType(event.target.value)}
                     value={type}
@@ -219,22 +219,22 @@ const NewHouse = () => {
                 </p>
               </div>
             </div>
-            <button>Add house</button>
+            <button>Add House</button>
           </form>
 
           <style jsx>{`
-          input[type='number'],
-          select,
-          textarea{
-          display:block;
-          padding:15px;
-          font-size: 20px !important;
-          width: 100%;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          box-sizing: border-box;
-          margin-bottom: 10px;
-          }
+            input[type='number'],
+            select,
+            textarea {
+              display: block;
+              padding: 20px;
+              font-size: 20px !important;
+              width: 100%;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+              box-sizing: border-box;
+              margin-bottom: 5px;
+            }
           `}</style>
         </div>
       }
