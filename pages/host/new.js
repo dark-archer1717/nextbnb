@@ -36,7 +36,12 @@ const NewHouse = () => {
               }
             }}
           >
-
+            <input
+              id="title"
+              type="text"
+              placeholder='House Title'
+              onChange={(event) => setTitle(event.target.value)} />
+            <button>Add House</button>
           </form >
           <style jsx>{``}</style>
         </div >
@@ -44,3 +49,5 @@ const NewHouse = () => {
     />
   )
 }
+
+export default NewHouse
