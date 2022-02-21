@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useStoreState, useStoreActions } from 'easy-peasy'
 
-export default function Header(props) {
+export default function Header() {
   const loggedIn = useStoreState(state => state.login.loggedIn)
   const setLoggedIn = useStoreActions(actions => actions.login.setLoggedIn)
 
@@ -19,12 +19,13 @@ export default function Header(props) {
           <img src="/img/bnb.png" alt="" />
         </a>
       </Link>
-
-      <li>
-        <Link href='/host'>
-          <a>Your Houses</a>
-        </Link>
-      </li>
+      <div className='house'>
+        <li>
+          <Link href='/host'>
+            <a>Your Houses</a>
+          </Link>
+        </li>
+      </div>
 
       {loggedIn ? (
         <nav>
@@ -55,10 +56,21 @@ export default function Header(props) {
           </ul>
         </nav>
       )}
+
+      <li>
+        <Link href='/host/new'>
+          <a>Add House</a>
+        </Link>
+      </li>
       <style jsx>{`
         ul {
           margin: 0;
           padding: 0;
+        }
+        house{
+          border-bottom: 1px solid #eee;
+          height: 50px;
+          padding: 1em 0.5em;
         }
         li {
           display: block;

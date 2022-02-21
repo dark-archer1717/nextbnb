@@ -1,22 +1,9 @@
 import axios from 'axios'
 import Head from 'next/head'
 import Link from 'next/link'
-import Cookies from 'cookies'
-import { House, User } from '../../model.js'
-import { useEffect } from 'react'
-import { useStoreActions } from 'easy-peasy'
-
 import Layout from '../../components/Layout'
 
-export default function Host({ houses, nextbnb_session }) {
-  const setLoggedIn = useStoreActions((actions) => actions.login.setLoggedIn)
-
-  useEffect(() => {
-    if (nextbnb_session) {
-      setLoggedIn(true)
-    }
-  }, [])
-
+const Host = (props) => {
   return (
     <Layout
       content={
@@ -24,40 +11,70 @@ export default function Host({ houses, nextbnb_session }) {
           <Head>
             <title>Your houses</title>
           </Head>
-          <h2>Your houses</h2>
+          <div className='container'>
+            <div className='houses'>
+              <h2>Your houses</h2>
 
-          <div className='houses'>
-            {houses
-              ? houses.map((house, index) => {
-                return (
-                  <div className='house' key={index}>
-                    <img src={house.picture} alt='House picture' />
-                    <div>
-                      <h2>
-                        {house.title} in {house.town}
-                      </h2>
-                      <p>
-                        <Link href={`/houses/${house.id}`}>
-                          <a>View house page</a>
-                        </Link>
-                      </p>
-                      <p>
-                        <Link href={`/host/${house.id}`}>
-                          <a>Edit house details</a>
-                        </Link>
-                      </p>
+              <div className='list'>
+                {props.houses.map((house, index) => {
+                  return (
+                    <div className='house' key={index}>
+                      <img src={house.picture} alt='House picture' />
+                      <div>
+                        <h2>
+                          {house.title} in {house.town}
+                        </h2>
+                        <p>
+                          <Link href={`/houses/${house.id}`}>
+                            <a>View house page</a>
+                          </Link>
+                        </p>
+                        <p>
+                          <Link href={`/host/${house.id}`}>
+                            <a>Edit house details</a>
+                          </Link>
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                )
-              })
-              : ''}
-          </div>
+                  )
+                })}
+              </div>
+            </div>
+            <div className='bookings'>
+              <h2>Your bookings</h2>
 
+              <div className='list'>
+                {props.bookings.map((booking, index) => {
+                  return (
+                    <div className='booking' key={index}>
+                      <div>
+                        <h2>
+                          {booking.house.title} in {booking.house.town}
+                        </h2>
+                        <p>
+                          Booked from{' '}
+                          {new Date(booking.booking.startDate).toDateString()}{' '}
+                          to {new Date(booking.booking.endDate).toDateString()}
+                        </p>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
           <style jsx>{`
-            .houses {
+            .container {
+              display: grid;
+              grid-template-columns: 60% 40%;
+              grid-gap: 50px;
+            }
+
+            .list {
               display: grid;
               grid-template-columns: 100%;
               grid-gap: 40px;
+              margin-top: 60px;
             }
 
             .house {
@@ -67,7 +84,7 @@ export default function Host({ houses, nextbnb_session }) {
             }
 
             .house img {
-              width: 180px;
+              width: 100px;
             }
           `}</style>
         </div>
@@ -76,30 +93,17 @@ export default function Host({ houses, nextbnb_session }) {
   )
 }
 
-export async function getServerSideProps({ req, res, query }) {
-  const cookies = new Cookies(req, res)
-  const nextbnb_session = cookies.get('nextbnb_session')
-
-  let houses
-  if (!nextbnb_session) {
-    {
-      res.writeHead(301, {
-        Location: '/'
-      })
-      res.end()
-      return { props: {} }
-    }
-  }
-
-  const user = await User.findOne({
-    where: { session_token: nextbnb_session },
+Host.getInitialProps = async (ctx) => {
+  const response = await axios({
+    method: 'get',
+    url: 'http://localhost:3000/api/host/list',
+    headers: ctx.req ? { cookie: ctx.req.headers.cookie } : undefined,
   })
-  houses = await House.findAndCountAll({ where: { owner: user.id } })
 
   return {
-    props: {
-      houses: houses ? houses.rows.map((houses) => houses.dataValues) : null,
-      nextbnb_session
-    }
+    houses: response.data.houses,
+    bookings: response.data.bookings,
   }
 }
+
+export default Host
