@@ -1,16 +1,16 @@
-import Link from 'next/link'
-import { useStoreState, useStoreActions } from 'easy-peasy'
+import Link from 'next/link';
+import { useStoreState, useStoreActions } from 'easy-peasy';
 
 export default function Header() {
-  const loggedIn = useStoreState(state => state.login.loggedIn)
-  const setLoggedIn = useStoreActions(actions => actions.login.setLoggedIn)
+  const loggedIn = useStoreState((state) => state.login.loggedIn);
+  const setLoggedIn = useStoreActions((actions) => actions.login.setLoggedIn);
 
   const setShowLoginModal = useStoreActions(
-    actions => actions.modals.setShowLoginModal
-  )
+    (actions) => actions.modals.setShowLoginModal
+  );
   const setShowRegistrationModal = useStoreActions(
-    actions => actions.modals.setShowRegistrationModal
-  )
+    (actions) => actions.modals.setShowRegistrationModal
+  );
 
   return (
     <div className="nav-container">
@@ -19,9 +19,9 @@ export default function Header() {
           <img src="/img/bnb.png" alt="" />
         </a>
       </Link>
-      <div className='house'>
+      <div className="house">
         <li>
-          <Link href='/host'>
+          <Link href="/host">
             <a>Your Houses</a>
           </Link>
         </li>
@@ -58,7 +58,7 @@ export default function Header() {
       )}
 
       <li>
-        <Link href='/host/new'>
+        <Link href="/host/new">
           <a>Add House</a>
         </Link>
       </li>
@@ -67,7 +67,7 @@ export default function Header() {
           margin: 0;
           padding: 0;
         }
-        house{
+        house {
           border-bottom: 1px solid #eee;
           height: 50px;
           padding: 1em 0.5em;
@@ -91,6 +91,7 @@ export default function Header() {
         }
         img {
           float: left;
+          margin-right: auto;
         }
         ul {
           float: right;

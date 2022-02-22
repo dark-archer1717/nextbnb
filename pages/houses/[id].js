@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import axios from 'axios'
 import { useStoreActions, useStoreState } from 'easy-peasy'
-
 import Layout from '../../components/Layout'
 import DateRangePicker from '../../components/DateRangePicker'
 import { useState, useEffect } from 'react'
@@ -60,7 +59,6 @@ const canReserve = async (houseId, startDate, endDate) => {
 export default function House({ house, nextbnb_session, bookedDates }) {
   const [startDate, setStartDate] = useState()
   const [endDate, setEndDate] = useState()
-
   const [dateChosen, setDateChosen] = useState(false)
   const [numberOfNightsBetweenDates, setNumberOfNightsBetweenDates] =
     useState(0)
@@ -92,6 +90,7 @@ export default function House({ house, nextbnb_session, bookedDates }) {
               {house.type} - {house.town}
             </p>
             <p>{house.title}</p>
+            <div>{house.description}</div>
           </article>
           <aside>
             <h2>Choose a date</h2>

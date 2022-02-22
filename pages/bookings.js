@@ -94,10 +94,10 @@ export async function getServerSideProps({ req, res, query }) {
     props: {
       bookings: bookings
         ? bookings.rows.map((booking) => {
-          booking.dataValues.createdAt = '' + booking.dataValues.createdAt;
-          booking.dataValues.updatedAt = booking.dataValues.updatedAt + '';
-          return booking.dataValues;
-        })
+            booking.dataValues.createdAt = '' + booking.dataValues.createdAt;
+            booking.dataValues.updatedAt = booking.dataValues.updatedAt + '';
+            return booking.dataValues;
+          })
         : null,
       houses: houses.rows.map((house) => house.dataValues),
       nextbnb_session: nextbnb_session || null
