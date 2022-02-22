@@ -1,8 +1,22 @@
 import axios from 'axios'
 import Layout from '../../components/Layout'
+import HouseForm from '../../components/HouseForm'
+import Head from 'next/head'
 
 const EditHouse = props => {
-  return <Layout content={<div>{props.house.title}</div>} />
+  return (
+    <Layout
+      content={
+        <>
+          <Head>
+            <title>Edit house</title>
+          </Head>
+
+          <HouseForm edit={true} house={props.house} />
+        </>
+      }
+    />
+  )
 }
 
 EditHouse.getInitialProps = async ({ query }) => {
