@@ -1,5 +1,11 @@
 import { Booking, User, House } from '../../../model.js';
 
+const sanitizeHtml = require('sanitize-html')
+
+houseData.description = sanitizeHtml(houseData.description, {
+  allowedTags: ['b', 'i', 'em', 'strong', 'p', 'br']
+})
+
 server.get('/api/host/list', async (req, res) => {
   if (!req.session.passport || !req.session.passport.user) {
     res.writeHead(403, {
@@ -11,7 +17,6 @@ server.get('/api/host/list', async (req, res) => {
         message: 'Unauthorized'
       })
     );
-
     return;
   }
 
@@ -154,3 +159,21 @@ server.post('/api/host/edit', async (req, res) => {
     });
   });
 });
+
+server.post('/api/host/image', (req, res) => {
+  if (!req.session.passport) {
+    res.writeHead(403, {
+      'Content-Type': 'application/json',
+    })
+    res.end(
+      JSON.stringify({
+        status: 'error',
+        message: 'Unauthorized',
+      })
+    )
+
+    return
+  }
+
+  const image = req.files.image
+})

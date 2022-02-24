@@ -35,9 +35,13 @@ export default function Header() {
                 <a>Bookings</a>
               </Link>
             </li>
-            <li>
-              <a>Logged in</a>
-            </li>
+            <ul>
+              <button>
+                <li>
+                  <a>Logged in</a>
+                </li>
+              </button>
+            </ul>
           </ul>
         </nav>
       ) : (
@@ -56,7 +60,12 @@ export default function Header() {
           </ul>
         </nav>
       )}
+      {/* {loggedIn ? (
+        <nav>
 
+          <li>LogOut</li>
+        </nav>
+      ) : ''} */}
       <li>
         <Link href="/host/new">
           <a>Add House</a>
@@ -66,6 +75,9 @@ export default function Header() {
         ul {
           margin: 0;
           padding: 0;
+        }
+        button {
+          margin-top:6px
         }
         house {
           border-bottom: 1px solid #eee;

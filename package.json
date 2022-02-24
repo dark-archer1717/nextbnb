@@ -8,7 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@railway/cli": "^0.3.1",
+    "@railway/cli": "^1.2.3",
     "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "cookies": "^0.8.0",
@@ -16,18 +16,22 @@
     "dotenv": "^16.0.0",
     "easy-peasy": "^5.0.4",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "next": "12.0.7",
+    "next": "^12.1.0",
     "pg": "^8.7.1",
     "raw-body": "^2.4.3",
     "react": "17.0.2",
     "react-day-picker": "7.4.0",
     "react-dom": "17.0.2",
     "react-pell": "^0.4.0",
+    "sanitize-html": "^2.7.0",
     "sequelize": "^6.13.0",
     "stripe": "8.191.0"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.2",
     "eslint": "8.5.0",
-    "eslint-config-next": "12.0.7"
+    "eslint-config-next": "12.0.7",
+    "postcss": "^8.4.6",
+    "tailwindcss": "^3.0.23"
   }
 }

@@ -1,91 +1,91 @@
-import Head from 'next/head'
-import axios from 'axios'
-import { useStoreActions, useStoreState } from 'easy-peasy'
-import Layout from '../../components/Layout'
-import DateRangePicker from '../../components/DateRangePicker'
-import { useState, useEffect } from 'react'
-import Cookies from 'cookies'
-import { House as HouseModel } from '../../model.js'
+import Head from 'next/head';
+import axios from 'axios';
+import { useStoreActions, useStoreState } from 'easy-peasy';
+import Layout from '../../components/Layout';
+import DateRangePicker from '../../components/DateRangePicker';
+import { useState, useEffect } from 'react';
+import Cookies from 'cookies';
+import { House as HouseModel } from '../../model.js';
 
 const calcNumberOfNightsBetweenDates = (startDate, endDate) => {
-  const start = new Date(startDate) //clone
-  const end = new Date(endDate) //clone
-  let dayCount = 0
+  const start = new Date(startDate); //clone
+  const end = new Date(endDate); //clone
+  let dayCount = 0;
 
   while (end > start) {
-    dayCount++
-    start.setDate(start.getDate() + 1)
+    dayCount++;
+    start.setDate(start.getDate() + 1);
   }
 
-  return dayCount
-}
+  return dayCount;
+};
 
-const getBookedDates = async id => {
+const getBookedDates = async (id) => {
   try {
     const response = await axios.post(
       'http://localhost:3000/api/houses/booked',
       { houseId: id }
-    )
+    );
     if (response.data.status === 'error') {
-      alert(response.data.message)
-      return
+      alert(response.data.message);
+      return;
     }
-    return response.data.dates
+    return response.data.dates;
   } catch (error) {
-    console.error(error)
-    return
+    console.error(error);
+    return;
   }
-}
+};
 
 const canReserve = async (houseId, startDate, endDate) => {
   try {
     const response = await axios.post(
       'http://localhost:3000/api/houses/check',
       { houseId, startDate, endDate }
-    )
+    );
     if (response.data.status === 'error') {
-      alert(response.data.message)
-      return
+      alert(response.data.message);
+      return;
     }
 
-    if (response.data.message === 'busy') return false
-    return true
+    if (response.data.message === 'busy') return false;
+    return true;
   } catch (error) {
-    console.error(error)
-    return
+    console.error(error);
+    return;
   }
-}
+};
 
 export default function House({ house, nextbnb_session, bookedDates }) {
-  const [startDate, setStartDate] = useState()
-  const [endDate, setEndDate] = useState()
-  const [dateChosen, setDateChosen] = useState(false)
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [dateChosen, setDateChosen] = useState(false);
   const [numberOfNightsBetweenDates, setNumberOfNightsBetweenDates] =
-    useState(0)
+    useState(0);
 
-  const loggedIn = useStoreState(state => state.login.loggedIn)
+  const loggedIn = useStoreState((state) => state.login.loggedIn);
 
   const setShowLoginModal = useStoreActions(
-    actions => actions.modals.setShowLoginModal
-  )
+    (actions) => actions.modals.setShowLoginModal
+  );
 
-  const setLoggedIn = useStoreActions(actions => actions.login.setLoggedIn)
+  const setLoggedIn = useStoreActions((actions) => actions.login.setLoggedIn);
 
   useEffect(() => {
     if (nextbnb_session) {
-      setLoggedIn(true)
+      setLoggedIn(true);
     }
-  }, [])
+  }, []);
 
   return (
     <Layout
       content={
-        <div className='container'>
+        <div className="container">
           <Head>
             <title>{house.title}</title>
           </Head>
           <article>
-            <img src={house.picture} width='100%' alt='House picture' />
+            <img src={house.picture} width="100%" alt="House picture" />
             <p>
               {house.type} - {house.town}
             </p>
@@ -98,10 +98,10 @@ export default function House({ house, nextbnb_session, bookedDates }) {
               datesChanged={(startDate, endDate) => {
                 setNumberOfNightsBetweenDates(
                   calcNumberOfNightsBetweenDates(startDate, endDate)
-                )
-                setDateChosen(true)
-                setStartDate(startDate)
-                setEndDate(endDate)
+                );
+                setDateChosen(true);
+                setStartDate(startDate);
+                setEndDate(endDate);
               }}
               bookedDates={bookedDates}
             />
@@ -114,11 +114,11 @@ export default function House({ house, nextbnb_session, bookedDates }) {
                 <p>${(numberOfNightsBetweenDates * house.price).toFixed(2)}</p>
                 {loggedIn ? (
                   <button
-                    className='reserve'
+                    className="reserve"
                     onClick={async () => {
                       if (!(await canReserve(house.id, startDate, endDate))) {
-                        alert('The dates chosen are not valid')
-                        return
+                        alert('The dates chosen are not valid');
+                        return;
                       }
 
                       try {
@@ -127,15 +127,15 @@ export default function House({ house, nextbnb_session, bookedDates }) {
                           {
                             amount: house.price * numberOfNightsBetweenDates
                           }
-                        )
+                        );
                         if (sessionResponse.data.status === 'error') {
-                          alert(sessionResponse.data.message)
-                          return
+                          alert(sessionResponse.data.message);
+                          return;
                         }
 
-                        const sessionId = sessionResponse.data.sessionId
+                        const sessionId = sessionResponse.data.sessionId;
                         const stripePublicKey =
-                          sessionResponse.data.stripePublicKey
+                          sessionResponse.data.stripePublicKey;
 
                         const reserveResponse = await axios.post(
                           '/api/reserve',
@@ -145,20 +145,20 @@ export default function House({ house, nextbnb_session, bookedDates }) {
                             endDate,
                             sessionId
                           }
-                        )
+                        );
                         if (reserveResponse.data.status === 'error') {
-                          alert(reserveResponse.data.message)
-                          return
+                          alert(reserveResponse.data.message);
+                          return;
                         }
-                        console.log(reserveResponse.data)
+                        console.log(reserveResponse.data);
 
-                        const stripe = Stripe(stripePublicKey)
+                        const stripe = Stripe(stripePublicKey);
                         const { error } = await stripe.redirectToCheckout({
                           sessionId
-                        })
+                        });
                       } catch (error) {
-                        console.log(error)
-                        return
+                        console.log(error);
+                        return;
                       }
                     }}
                   >
@@ -166,9 +166,9 @@ export default function House({ house, nextbnb_session, bookedDates }) {
                   </button>
                 ) : (
                   <button
-                    className='reserve'
+                    className="reserve"
                     onClick={() => {
-                      setShowLoginModal()
+                      setShowLoginModal();
                     }}
                   >
                     Log in to Reserve
@@ -192,15 +192,15 @@ export default function House({ house, nextbnb_session, bookedDates }) {
         </div>
       }
     />
-  )
+  );
 }
 
 export async function getServerSideProps({ req, res, query }) {
-  const { id } = query
-  const cookies = new Cookies(req, res)
-  const nextbnb_session = cookies.get('nextbnb_session')
-  const house = await HouseModel.findByPk(id)
-  const bookedDates = await getBookedDates(id)
+  const { id } = query;
+  const cookies = new Cookies(req, res);
+  const nextbnb_session = cookies.get('nextbnb_session');
+  const house = await HouseModel.findByPk(id);
+  const bookedDates = await getBookedDates(id);
 
   return {
     props: {
@@ -208,5 +208,5 @@ export async function getServerSideProps({ req, res, query }) {
       nextbnb_session: nextbnb_session || null,
       bookedDates
     }
-  }
+  };
 }

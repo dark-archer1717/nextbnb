@@ -102,14 +102,21 @@ const HouseForm = props => {
           />
         </p>
         <p>
-          <label>Price per night</label>
+          <label >House picture</label>
           <input
-            required
-            onChange={event => setPrice(event.target.value)}
-            type='number'
-            placeholder='Price per night'
-            value={price}
+            type='file'
+            id='fileUpload'
+            accept='image/*'
+            onChange={async (event) => {
+              const files = event.target.files
+              const formData = new FormData()
+              formData.append('image', files[0])
+
+              const response = await axios.post('/api/host/image', formData)
+              setPicture('http://localhost:3000' + response.data.path)
+            }}
           />
+          {picture ? <img src="{picture}" width="200" alt="House image" /> : ''}
         </p>
         <p>
           <label>House picture URL</label>
@@ -121,13 +128,13 @@ const HouseForm = props => {
             value={picture}
           />
         </p>
-        <div>
+        <div> House Description
           <Editor
             onChange={html => setDescription(html)}
             defaultContent={description}
             actions={['bold', 'underline', 'italic']}
           />
-          <style jsx global>{`
+          {/* <style jsx global>{`
             .pell-container {
               border: 1px solid #ccc;
             }
@@ -158,7 +165,7 @@ const HouseForm = props => {
             .pell-button-selected {
               background-color: #f0f0f0;
             }
-         `}</style>
+         `}</style> */}
         </div>
 
         <div className='grid'>
