@@ -8,6 +8,12 @@ export default createStore({
       state.loggedIn = true
     }),
   },
+  logout: {
+    loggedIn: true,
+    setLoggedIn: action((state) => {
+      state.loggedIn = null
+    }),
+  },
   modals: {
     showModal: false,
     showLoginModal: false,

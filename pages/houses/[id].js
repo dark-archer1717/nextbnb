@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import Cookies from 'cookies';
 import { House as HouseModel } from '../../model.js';
 
+
 const calcNumberOfNightsBetweenDates = (startDate, endDate) => {
   const start = new Date(startDate); //clone
   const end = new Date(endDate); //clone
@@ -90,7 +91,10 @@ export default function House({ house, nextbnb_session, bookedDates }) {
               {house.type} - {house.town}
             </p>
             <p>{house.title}</p>
-            <div>{house.description}</div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: props.house.description
+              }}></div>
           </article>
           <aside>
             <h2>Choose a date</h2>

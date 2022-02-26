@@ -1,10 +1,12 @@
 import { Booking, User, House } from '../../../model.js';
 
 const sanitizeHtml = require('sanitize-html')
+const fileupload = require('express-fileupload')
 
 houseData.description = sanitizeHtml(houseData.description, {
   allowedTags: ['b', 'i', 'em', 'strong', 'p', 'br']
 })
+
 
 server.get('/api/host/list', async (req, res) => {
   if (!req.session.passport || !req.session.passport.user) {
@@ -160,20 +162,5 @@ server.post('/api/host/edit', async (req, res) => {
   });
 });
 
-server.post('/api/host/image', (req, res) => {
-  if (!req.session.passport) {
-    res.writeHead(403, {
-      'Content-Type': 'application/json',
-    })
-    res.end(
-      JSON.stringify({
-        status: 'error',
-        message: 'Unauthorized',
-      })
-    )
 
-    return
-  }
 
-  const image = req.files.image
-})

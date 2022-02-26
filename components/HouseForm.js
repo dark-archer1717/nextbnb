@@ -2,6 +2,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import Router from 'next/router'
 import Editor from 'react-pell'
+import pell from 'pell'
 
 
 const HouseForm = props => {
@@ -134,7 +135,7 @@ const HouseForm = props => {
             defaultContent={description}
             actions={['bold', 'underline', 'italic']}
           />
-          {/* <style jsx global>{`
+          <style jsx global>{`
             .pell-container {
               border: 1px solid #ccc;
             }
@@ -165,7 +166,7 @@ const HouseForm = props => {
             .pell-button-selected {
               background-color: #f0f0f0;
             }
-         `}</style> */}
+         `}</style>
         </div>
 
         <div className='grid'>
