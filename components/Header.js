@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import axios from 'axios';
 
 export default function Header() {
   const loggedIn = useStoreState((state) => state.login.loggedIn);
@@ -19,13 +20,15 @@ export default function Header() {
           <img src="/img/bnb.png" alt="" />
         </a>
       </Link>
-      <div className="house">
-        <li>
-          <Link href="/host">
-            <a>Your Houses</a>
-          </Link>
-        </li>
-      </div>
+      <nav>
+        <div className="house">
+          <li>
+            <Link href="/host">
+              <a>Your Houses</a>
+            </Link>
+          </li>
+        </div>
+      </nav>
 
       {loggedIn ? (
         <nav>
@@ -38,10 +41,20 @@ export default function Header() {
             <ul>
               <button>
                 <li>
-                  <a>Logged in</a>
+                  <a>Logged In</a>
                 </li>
               </button>
             </ul>
+            <li>
+              <a
+                href='#'
+                onClick={async () => {
+                  await axios.post('/api/auth/logout')
+                  setLoggedIn(null)
+                }}>
+                Log out
+              </a>
+            </li>
           </ul>
         </nav>
       ) : (
@@ -60,17 +73,13 @@ export default function Header() {
           </ul>
         </nav>
       )}
-      {/* {loggedIn ? (
-        <nav>
-
-          <li>LogOut</li>
-        </nav>
-      ) : ''} */}
-      <li>
-        <Link href="/host/new">
-          <a>Add House</a>
-        </Link>
-      </li>
+      <nav>
+        <li>
+          <Link href="/host/new">
+            <a>Add House</a>
+          </Link>
+        </li>
+      </nav>
       <style jsx>{`
         ul {
           margin: 0;
