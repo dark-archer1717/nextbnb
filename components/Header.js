@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import axios from 'axios';
@@ -18,7 +19,7 @@ export default function Header() {
     <div className="nav-container">
       <Link href="/">
         <a>
-          <img src="/img/bnb.png" alt="" />
+          <img src="/img/bnb.png" alt="icon" />
         </a>
       </Link>
 
@@ -49,12 +50,13 @@ export default function Header() {
             </li>
             <li>
               <a
-                href='#'
+                href="#"
                 onClick={async () => {
-                  await axios.post('/api/auth/logout')
-                  setLoggedIn(null)
-                  session_expiration(true)
-                }}>
+                  await axios.post('/api/auth/logout');
+                  setLoggedIn(null);
+                  session_expiration(true);
+                }}
+              >
                 Log out
               </a>
             </li>
@@ -83,7 +85,7 @@ export default function Header() {
           padding: 0;
         }
         button {
-          margin-top:6px
+          margin-top: 6px;
         }
         house {
           border-bottom: 1px solid #eee;

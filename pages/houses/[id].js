@@ -7,7 +7,6 @@ import { useState, useEffect } from 'react';
 import Cookies from 'cookies';
 import { House as HouseModel } from '../../model.js';
 
-
 const calcNumberOfNightsBetweenDates = (startDate, endDate) => {
   const start = new Date(startDate); //clone
   const end = new Date(endDate); //clone
