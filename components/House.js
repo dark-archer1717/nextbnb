@@ -8,14 +8,15 @@ export default function House(props) {
       <a>
         <img
           src={props.picture}
-          width="100%"
+          width={"100%"}
+          height={'100%'}
           alt="House Picture"
           style={{ boxShadow: '0px 5px 5px rgba(0,0,0,0.4)' }}
         />
+        <p>{props.title}</p>
         <p>
           {props.type} - {props.town}
         </p>
-        <p>{props.title}</p>
       </a>
     </Link>
   );

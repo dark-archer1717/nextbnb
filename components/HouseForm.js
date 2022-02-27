@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import axios from 'axios'
 import Router from 'next/router'
-import Editor from 'react-pell'
-import pell from 'pell'
+import Editor from 'react-pell-enhanced'
 
 
-const HouseForm = props => {
+const HouseForm = (props) => {
   const id = (props.house && props.house.id) || null
 
   const [title, setTitle] = useState((props.house && props.house.title) || '')
@@ -129,44 +128,44 @@ const HouseForm = props => {
             value={picture}
           />
         </p>
-        <div> House Description
+        <div>
           <Editor
             onChange={html => setDescription(html)}
             defaultContent={description}
             actions={['bold', 'underline', 'italic']}
           />
-          <style jsx global>{`
-            .pell-container {
-              border: 1px solid #ccc;
-            }
-            .pell,
-            .pell-content {
-              box-sizing: border-box;
-            }
-            .pell-content {
-              height: 300px;
-              outline: 0;
-              overflow-y: auto;
-              padding: 10px
-            }
-            .pell-actionbar {
-              background-color: #fff;
-              border-bottom: 1px solid hsla(0, 0%, 4%, 0.1);
-            }
-            .pell-button {
-              background-color: transparent;
-              border: none;
-              cursor: pointer;
-              height: 30px;
-              outline: 0;
-              width: 30px;
-              vertical-align: bottom;
-              color: black;
-            }
-            .pell-button-selected {
-              background-color: #f0f0f0;
-            }
-         `}</style>
+          {/*         <style jsx global>{`
+  .pell-container {
+    border: 1px solid #ccc;
+  }
+  .pell,
+  .pell-content {
+    box-sizing: border-box;
+  }
+  .pell-content {
+    height: 300px;
+    outline: 0;
+    overflow-y: auto;
+    padding: 10px;
+  }
+  .pell-actionbar {
+    background-color: #fff;
+    border-bottom: 1px solid hsla(0, 0%, 4%, 0.1);
+  }
+  .pell-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    height: 30px;
+    outline: 0;
+    width: 30px;
+    vertical-align: bottom;
+    color: black;
+  }
+  .pell-button-selected {
+    background-color: #f0f0f0;
+  }
+`}</style> */}
         </div>
 
         <div className='grid'>

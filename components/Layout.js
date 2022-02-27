@@ -53,12 +53,18 @@ export default function Layout(props) {
       <style jsx>{`
         main {
           position: relative;
-          max-width: 56em;
+          max-width: 60em;
           background-color: white;
           padding: 2em;
-          margin: 0 auto;
+          margin: auto;
           box-sizing: border-box;
+          justify-content: center
         }
+        @media only screen and (min-device-width: 400px) {
+        body {
+        background-image: url({props.image});
+        }
+        } 
       `}</style>
     </div>
   );
