@@ -7,7 +7,7 @@ export default function Modal(props) {
       <div className="modal">{props.children}</div>
       <style jsx global>{`
       .modal-background {
-          position: fixed;
+        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
