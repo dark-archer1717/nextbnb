@@ -11,13 +11,11 @@ export default function House(props) {
       as={'/houses/' + props.id}
     >
       <a
-        // style={{
-        //   height: '92%',
-        //   width: 'max-content',
-        //   padding: '1.5em',
-        //   margin: '1.2em'
-        // }}
-        style={{ display: 'grid', height: '100%' }}
+        style={{
+          display: 'grid',
+          height: '100%'
+        }}
+        // style={{ display: 'grid', height: '100%' }}
       >
         <Image
           src={props.picture}
