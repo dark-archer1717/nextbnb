@@ -1,3 +1,6 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 export default async (req, res) => {
   if (req.method !== 'POST') {
     res.status(405).end() //Method Not Allowed

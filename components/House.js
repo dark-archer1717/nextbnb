@@ -15,7 +15,7 @@ export default function House(props) {
           display: 'grid',
           height: '100%'
         }}
-        // style={{ display: 'grid', height: '100%' }}
+      // style={{ display: 'grid', height: '100%' }}
       >
         <Image
           src={props.picture}

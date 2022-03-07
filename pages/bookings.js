@@ -1,19 +1,20 @@
-import axios from 'axios';
-import Head from 'next/head';
-import { Booking, House, User } from '../model.js';
-import Cookies from 'cookies';
-import Layout from '../components/Layout';
-import { useEffect } from 'react';
-import { useStoreActions } from 'easy-peasy';
+import axios from 'axios'
+import Head from 'next/head'
+import Cookies from 'cookies'
+import { Booking, House, User } from '../model.js'
+import { useEffect } from 'react'
+import { useStoreActions } from 'easy-peasy'
+
+import Layout from '../components/Layout'
 
 export default function Bookings({ bookings, houses, nextbnb_session }) {
-  const setLoggedIn = useStoreActions((actions) => actions.login.setLoggedIn);
+  const setLoggedIn = useStoreActions((actions) => actions.login.setLoggedIn)
 
   useEffect(() => {
     if (nextbnb_session) {
-      setLoggedIn(true);
+      setLoggedIn(true)
     }
-  }, []);
+  }, [])
 
   return (
     <Layout
@@ -28,7 +29,7 @@ export default function Bookings({ bookings, houses, nextbnb_session }) {
             {bookings.map((booking, index) => {
               const house = houses.filter(
                 (house) => house.id === booking.houseId
-              )[0];
+              )[0]
               return (
                 <div className="booking" key={index}>
                   <img src={house.picture} alt="House picture" />
@@ -42,7 +43,7 @@ export default function Bookings({ bookings, houses, nextbnb_session }) {
                     </p>
                   </div>
                 </div>
-              );
+              )
             })}
           </div>
 
@@ -66,41 +67,41 @@ export default function Bookings({ bookings, houses, nextbnb_session }) {
         </div>
       }
     />
-  );
+  )
 }
 
 export async function getServerSideProps({ req, res, query }) {
-  const cookies = new Cookies(req, res);
-  const nextbnb_session = cookies.get('nextbnb_session');
+  const cookies = new Cookies(req, res)
+  const nextbnb_session = cookies.get('nextbnb_session')
 
-  let bookings;
+  let bookings
   if (!nextbnb_session) {
     res.writeHead(301, {
       Location: '/'
-    });
-    res.end();
-    return { props: {} };
+    })
+    res.end()
+    return { props: {} }
   }
 
   const user = await User.findOne({
     where: { session_token: nextbnb_session }
-  });
+  })
 
-  bookings = await Booking.findAndCountAll({ where: { userId: user.id } });
+  bookings = await Booking.findAndCountAll({ where: { userId: user.id } })
 
-  const houses = await House.findAndCountAll();
+  const houses = await House.findAndCountAll()
 
   return {
     props: {
       bookings: bookings
         ? bookings.rows.map((booking) => {
-            booking.dataValues.createdAt = '' + booking.dataValues.createdAt;
-            booking.dataValues.updatedAt = booking.dataValues.updatedAt + '';
-            return booking.dataValues;
-          })
+          booking.dataValues.createdAt = '' + booking.dataValues.createdAt
+          booking.dataValues.updatedAt = booking.dataValues.updatedAt + ''
+          return booking.dataValues
+        })
         : null,
       houses: houses.rows.map((house) => house.dataValues),
       nextbnb_session: nextbnb_session || null
     }
-  };
+  }
 }
