@@ -183,11 +183,12 @@ export default function House({ house, nextbnb_session, bookedDates }) {
               display: grid;
               grid-template-columns: 60% 40%;
               grid-gap: 30px;
+              width: 100%;
             }
-            aside {
+            /* aside {
               border: 1px solid #ccc;
               padding: 20px;
-            }
+            } */
           `}</style>
         </div>
       }
