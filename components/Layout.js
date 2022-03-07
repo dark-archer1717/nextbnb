@@ -52,12 +52,16 @@ export default function Layout(props) {
       <style jsx>{`
         main {
           position: relative;
-          max-width: 60em;
+          /* max-width: 60em; */
           background-color: white;
-          padding: 2em;
           margin: auto;
           box-sizing: border-box;
+          display: flex;
+          width: 100%;
+          height: 70%;
+          align-items: center;
           justify-content: center;
+          padding: 2em;
         }
         @media only screen and (min-device-width: 400px) {
           body {
