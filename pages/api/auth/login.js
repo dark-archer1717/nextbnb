@@ -38,6 +38,8 @@ export default async (req, res) => {
     return
   }
 
+  // sessionToken
+
   let sessionToken = null
   const sessionExpiration = new Date()
   sessionExpiration.setDate(sessionExpiration.getDate() + 30)
@@ -60,6 +62,7 @@ export default async (req, res) => {
       { where: { email } }
     )
   }
+
   //adding cookies
   const cookies = new Cookies(req, res)
   cookies.set('nextbnb_session', sessionToken, {

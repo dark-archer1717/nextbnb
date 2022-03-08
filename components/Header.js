@@ -42,10 +42,10 @@ export default function Header() {
             <ul>
               <li>
                 <a
-                  href="{}"
+                  href=" "
                   onClick={async () => {
                     await axios.post('/api/auth/logout');
-                    localStorage.clear('sessionToken')
+                    localStorage.clear(sessionToken)
                     console.log('logout')
                   }}
                 >
