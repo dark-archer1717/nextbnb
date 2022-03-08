@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import axios from 'axios';
 import Cookies from 'cookies';
+import Router from 'next/router';
 
 export default function Header() {
   const loggedIn = useStoreState((state) => state.login.loggedIn);
@@ -38,6 +39,20 @@ export default function Header() {
                 </li>
               </button>
             </ul>
+            <ul>
+              <li>
+                <a
+                  href="{}"
+                  onClick={async () => {
+                    await axios.post('/api/auth/logout');
+                    localStorage.clear('sessionToken')
+                    console.log('logout')
+                  }}
+                >
+                  Log out
+                </a>
+              </li>
+            </ul>
             <li>
               <Link href="/host">
                 <a>Your Houses</a>
@@ -47,18 +62,6 @@ export default function Header() {
               <Link href="/host/new">
                 <a>Add House</a>
               </Link>
-            </li>
-            <li>
-              <a
-                href="#"
-                onClick={async () => {
-                  await axios.post('/api/auth/logout');
-                  setLoggedIn(null);
-                  session_expiration(true);
-                }}
-              >
-                Log out
-              </a>
             </li>
           </ul>
         </nav>

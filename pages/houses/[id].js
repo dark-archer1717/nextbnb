@@ -90,7 +90,10 @@ export default function House({ house, nextbnb_session, bookedDates }) {
               {house.type} - {house.town}
             </p>
             <p>{house.title}</p>
-            <p>{house.description}</p>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: house.description
+              }}></div>
           </article>
           <aside>
             <h2>Choose a date</h2>
