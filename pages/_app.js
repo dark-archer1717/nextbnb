@@ -1,4 +1,3 @@
-import App from 'next/app'
 import '../styles/globals.css'
 import store from '../store'
 import { StoreProvider } from 'easy-peasy'
